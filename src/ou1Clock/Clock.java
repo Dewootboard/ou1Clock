@@ -4,34 +4,23 @@ public class Clock {
 	private NumberDisplay hours;
 	private NumberDisplay minutes;
 	private String displayString;
-	int hrs = 24;
-	int mins = 60;
 	
 	/**
 	 * 
 	 */
-	public Clock(){
-		try{
-			hours = new NumberDisplay(0, hrs);
-			minutes = new NumberDisplay(0, mins);
-			
-		}catch(Exception e){
-			System.out.println(e);
-		}
+	public Clock() throws Exception {
+		hours = new NumberDisplay(0, 24);
+		minutes = new NumberDisplay(0, 60);
 	}
 	
 	/**
 	 * @param timeH
 	 * @param timeM
 	 */
-	public Clock(int timeH, int timeM){
-		try{
-			hours = new NumberDisplay(0, hrs);
-			minutes = new NumberDisplay(0, mins);
-			setTime(timeH, timeM);
-		}catch(Exception e){
-			System.out.println(e);
-		}
+	public Clock(int timeH, int timeM) throws Exception {
+		hours = new NumberDisplay(0, 24);
+		minutes = new NumberDisplay(0, 60);
+		setTime(timeH, timeM);
 	}
 	
 	/**
@@ -63,7 +52,7 @@ public class Clock {
 	 * @param hour
 	 * @param minute
 	 */
-	public void setTime(int hour, int minute){
+	public void setTime(int hour, int minute) throws Exception {
 		hours.setValue(hour);
 		minutes.setValue(minute);
 	}

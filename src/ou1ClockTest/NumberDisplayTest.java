@@ -36,7 +36,7 @@ public class NumberDisplayTest {
 	}
 
 	@Test
-	public void setValueTest() {
+	public void setValueTest() throws Exception{
 		NumberDisplay numD = new NumberDisplay(0,10);
 
 		for(int i = 0; i < 10; i++){

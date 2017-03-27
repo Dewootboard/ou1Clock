@@ -1,7 +1,7 @@
 package ou1Clock;
 
 public class NumberDisplay {
-	private int minLimit, maxLimit, value;
+	protected int minLimit, maxLimit, value;
 
 	/**  Skapar en ny numberdisplay med värdet minLimit och
 	 *  gränserna minLimit och maxLimit. Om maxLimit inte
@@ -34,7 +34,10 @@ public class NumberDisplay {
 	 * genereras ett undantag.
 	 * @return
 	 */
-	public void setValue(int newValue){
+	public void setValue(int newValue) throws Exception{
+		if(newValue < minLimit || newValue >= maxLimit)
+			throw new IllegalArgumentException("newValue får ej överskrida maxLimit, och måste vara större än minLimit." +
+											" Givna newValue: " + newValue);
 		value = newValue;
 	}
 	

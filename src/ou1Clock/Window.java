@@ -14,15 +14,26 @@ public class Window extends JFrame{
     public void init(){
         //  set Layout to whatever Layout Manager
         //  flowLayout, GridLayout, etc...
-        getContentPane().setLayout(new FlowLayout());
+        try {
+            alarm = new AlarmClock();
+            alarm.setAlarm(0, 15);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        alarm.turnOn();
+
+
+        //1. Create the frame.
+        JFrame frame = new JFrame("FrameDemo");
+        frame.getContentPane().setLayout(new FlowLayout());
         JLabel label = new JLabel("Text-Only Label");
         label.setFont(new Font("Serif", Font.PLAIN, 36));
-        getContentPane().add(label);
-        setSize(230, 230);  //  or whatever size you want
+        //frame.getContentPane().add(label);
+        frame.setSize(230, 230);  //  or whatever size you want
         //  Place Frame in middle of Screen
-        setLocationRelativeTo(null);
-        setVisible(true);
-        g = getGraphics();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        g = frame.getGraphics();
 
         run();
     }
@@ -30,31 +41,29 @@ public class Window extends JFrame{
 
     public void run(){
         //Clock clock = new Clock();
-        alarm = new AlarmClock();
-        alarm.setAlarm(0, 10);
-        alarm.turnOn();
 
         for(int i = 0; true ; i++){
             try{
                 Thread.sleep(500);
+                repaint();
+                update(g);
             }catch(Exception e){
 
             }
-            repaint();
-            update(g);
         }
     }
 
     @Override
     public void update(Graphics g) {
         alarm.timeTick();
-        if(alarm.isTriggered())
-            alarm.turnOff();
         paint(g);
     }
 
     @Override
     public void paint(Graphics g) {
-        g.drawString(alarm.getTime(), 0, 0);
+        g.clearRect(0,0,1560,2460);
+        g.setColor(Color.black);
+        g.drawString(alarm.getTime(), 100, 100);
+        g.drawRect(100, 100, 100, 100);
     }
 }
