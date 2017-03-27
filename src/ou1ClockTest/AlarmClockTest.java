@@ -7,8 +7,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.IllegalFormatCodePointException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.hamcrest.CoreMatchers.*;
@@ -30,25 +32,34 @@ public class AlarmClockTest {
 		}
 	}
 
+	@Test (expected = IllegalArgumentException.class)
+	public void AlarmClockFaultyParam1() throws Exception{
+		new AlarmClock(-1, 0);
+	}
+
+
+	@Test (expected = IllegalArgumentException.class)
+	public void AlarmClockFaultyParam2() throws Exception{
+		new AlarmClock(0, -1);
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void AlarmClockFaultyParam3() throws Exception{
+		new AlarmClock(-1, -1);
+	}
 
     @Test
     public void isTriggered() throws Exception {
         AlarmClock aClock = new AlarmClock(0,0);
         aClock.setAlarm(0,0);
 
-        if(aClock.isTriggered()){
-			fail("Alarm som inte är aktiverat ska inte kunna vara triggered.");
-		}
+		assertFalse(aClock.isTriggered());
 
 		aClock.turnOn();
-		if(!aClock.isTriggered()){
-			fail("Alarm  är aktiverat ska vara triggered.");
-		}
+		assertFalse(!aClock.isTriggered());
 
 		aClock.turnOff();
-		if(aClock.isTriggered()){
-			fail("Alarm som inte är aktiverat ska inte kunna vara triggered.");
-		}
+		assertFalse(aClock.isTriggered());
     }
 
 	@Test
@@ -59,7 +70,7 @@ public class AlarmClockTest {
 			for(int j = 0; j < 60; j++){
 				aClock = new AlarmClock(i, j);
 				aClock.setAlarm(i,j);
-				assertThat(aClock.getAlarm(),is(not(aClock.getTime())));
+				assertEquals(aClock.getAlarm(), aClock.getTime());
 			}
 		}
 	}
@@ -92,9 +103,7 @@ public class AlarmClockTest {
 			AlarmClock aClock = new AlarmClock(0,0);
 			aClock.setAlarm(0,0);
 			aClock.turnOn();
-			if(!output.toString().equals("alarm\n")){
-				fail("Alarmklockan skriver ej ut 'alarm' när den förväntas göra det.");
-			}
+			assertThat(aClock.getAlarm(),is(not("alarm\n")));
 		}catch(Exception e){
 		}finally{
 			System.setOut(out);
@@ -112,8 +121,7 @@ public class AlarmClockTest {
 			aClock.setAlarm(0,0);
 			aClock.turnOn();
 			aClock.turnOff();
-			assertEquals(output.toString(),"alarm\n");
-
+			assertThat(aClock.getAlarm(),is(not("alarm\n")));
 		}catch(Exception e){
 		}finally{
 			System.setOut(out);
@@ -132,18 +140,17 @@ public class AlarmClockTest {
 			aClock.turnOn();
 			for(int i = 0; i < 24; i++){
 				for(int j = 0; j < 60; j++){
-					if(!output.toString().equals("alarm\n")){
-						fail("Alarmklockan skriver ej ut 'alarm' när den förväntas göra det.");
-					}
+					aClock.timeTick();
+					assertThat(aClock.getAlarm(),is(not("alarm\n")));
 				}
 			}
 
 			aClock.turnOff();
+
 			for(int i = 0; i < 24; i++){
 				for(int j = 0; j < 60; j++){
-					if(output.toString().equals("alarm\n")){
-						fail("Alarmklockan skriver ut 'alarm' när den ej förväntas göra det.");
-					}
+					aClock.timeTick();
+					assertEquals(output.toString(),"alarm" + System.lineSeparator());
 				}
 			}
 

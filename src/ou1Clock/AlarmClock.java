@@ -26,7 +26,7 @@ public class AlarmClock extends Clock {
 	public void setAlarm(int hour, int minute) throws Exception{
 		if(hour < 0 || hour >= 24 || minute < 0 || minute >= 60)
 			throw new IllegalArgumentException("Ett alarm kan endast vara mellan och lika med timmarna 0-23 och minutrarna 0-59.");
-		alarmString = (hour>9 ? (""+hour) : ("0"+hour) + ":" + minute);
+		alarmString = ((hour>9 ? ""+hour : "0"+hour) + ":" + (minute>9 ? ""+minute : "0"+minute));
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class AlarmClock extends Clock {
 	 * @return - Sant om alarmklockan ringer och falskt om det inte ringer.
 	 */
 	public boolean isTriggered(){
-		return active && getTime().equals(alarmString) || isRinging;
+		return (active && getTime().equals(alarmString)) || isRinging;
 	}
 	
 	/** Aktiverar alarmklockans alarm.

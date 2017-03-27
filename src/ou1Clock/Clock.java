@@ -11,6 +11,7 @@ public class Clock {
 	public Clock() throws Exception {
 		hours = new NumberDisplay(0, 24);
 		minutes = new NumberDisplay(0, 60);
+		updateDisplay();
 	}
 	
 	/**
@@ -21,6 +22,7 @@ public class Clock {
 		hours = new NumberDisplay(0, 24);
 		minutes = new NumberDisplay(0, 60);
 		setTime(timeH, timeM);
+		updateDisplay();
 	}
 	
 	/**
